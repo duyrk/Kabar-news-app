@@ -1,0 +1,120 @@
+import { StyleSheet, Text, View, TextInput, Pressable,Image } from 'react-native'
+import React, { useState } from 'react'
+import { Colors } from '../Contants/Colors'
+import { Typography } from '../Contants/Typographies'
+
+const Input = {
+    Active:'active',
+    Normal:'normal',
+    Disabled:'disabled',
+    Error:'error'
+}
+const inputState = (inputField)=>{
+    console.log(inputField)
+    return inputField;
+}
+
+const InputFieldIcon = (props) => {
+    const {onChangeText= (text)=>{},value,onPress1,image,placeHolder,isPassword=false} = props
+    const [inputField, setinputField] = useState(Input.Normal)
+    const [inputStateType, setinputState] = useState(Input.Normal)  
+    const [handleInput, sethandleInput] = useState('')
+
+
+    const handleOnChangeText = (newtext)=>{
+        sethandleInput(newtext)
+        onChangeText(newtext) //chuyền ngược lại để nhận dữ liệu
+        
+        
+    }
+   const Focus = () =>{
+    
+     if(inputField == Input.Active){
+            return;
+    }
+        setinputField(Input.Active)
+        console.log("focus")
+        
+    }
+   
+    const NotFocus = ()=>{
+        if(inputField == Input.Normal){
+            return;
+    }
+        setinputField(Input.Normal)
+        console.log("notfocus")
+    }
+    const DeleteInput = ()=>{
+        sethandleInput('');
+        handleOnChangeText('')
+    }
+    const CheckInput = ()=>{
+        if(handleInput !=''){
+            return true;
+        }
+        return false;
+    }
+  return (
+    <View >
+          
+            <Image style={styles.searchIcon} source={image}></Image>
+     
+       <TextInput secureTextEntry={isPassword} placeholder={placeHolder} onFocus={Focus} onBlur={NotFocus} onChangeText={(newtext)=>{handleOnChangeText(newtext)}} value={handleInput} 
+       style={[inputStateType == Input.Error ? styles.inputError : styles.input,inputStateType == Input.Disabled ? styles.inputDisabled  : styles.input]} ></TextInput>
+
+
+   
+    </View>
+  
+  )
+}
+
+export default InputFieldIcon
+
+const styles = StyleSheet.create({
+    
+    input:{
+        borderWidth:1,
+        borderColor:'#EBF0FF',
+        borderRadius:6,
+        padding: 10,
+        paddingStart:50,
+        marginTop:16
+    },
+    inputError:{
+        borderWidth:1,
+        borderColor:'#4E4B66',
+        borderRadius:6,
+        marginTop:4,
+        padding: 10,
+        backgroundColor:Colors.errorLight,
+        borderColor: Colors.errorDark
+    },
+    inputDisabled:{
+        borderWidth:1,
+        borderColor:'#4E4B66',
+        borderRadius:6,
+        marginTop:4,
+        padding: 10,
+        borderColor:'#667080',
+        backgroundColor:Colors.disabledInput,
+        color:Colors.bodyText
+    }
+    ,
+    iconOnFocus:{
+        position:'absolute',
+        top:16,
+        right:12,
+        
+    },
+    errorNotify:{
+        marginTop:7.83,
+        flexDirection:'row',
+        alignItems:'center'
+    },
+    searchIcon:{
+        position:'absolute',
+        top:28,
+        left:12,
+    }
+})
